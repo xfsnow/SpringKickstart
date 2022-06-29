@@ -176,3 +176,4 @@ OS name: "linux", version: "5.13.0-1031-azure", arch: "amd64", family: "unix"
       cleanDestinationDirectory: true
 ```
 但是需要把这个安装包添加到 GitHub 源码库里，而 GitHub 现在上传文件最大100MB，不能上传这个170MB的 Java 安装包。安装不了，回来改项目配置吧。改 pom.xml 中的`<java.version>11</java.version>`，和 SpringKickstart.Dockerfile 中的 `FROM openjdk:11-slim`。再重新打包和构建一遍。
+最后试的 Java 11 也不行，直到降到 Java 8 才可以。
