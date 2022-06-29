@@ -14,12 +14,14 @@ steps:
      mvn -v
 
 # Java tool installer
-# Acquire a specific version of Java from a user-supplied Azure blob or the tool cache and sets JAVA_HOME
 - task: JavaToolInstaller@0
   inputs:
-    versionSpec: '18'
-    jdkArchitectureOption: 'x86'
-    jdkSourceOption: 'PreInstalled'
+    versionSpec: "18"
+    jdkArchitectureOption: x64
+    jdkSourceOption: LocalDirectory
+    jdkFile: "/jdk-18_linux-x64_bin.tar.gz"
+    jdkDestinationDirectory: "/builds/binaries/externals"
+    cleanDestinationDirectory: true
 
 - bash: |
      mvn -v
