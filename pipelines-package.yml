@@ -27,6 +27,10 @@ stages:
       vmImage: $(vmImageName)
 
     steps:
+    - bash: |
+       java --version
+       mvn -v
+
     - task: Maven@3
       displayName: 'Maven Package'
       inputs:
