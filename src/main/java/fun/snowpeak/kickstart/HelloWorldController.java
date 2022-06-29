@@ -4,6 +4,8 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import java.io.IOException;
+import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -15,7 +17,7 @@ public class HelloWorldController {
 
     @RequestMapping("/")
     @ResponseBody
-    public String index(HttpServletRequest request) {
+    public String index(HttpServletRequest request) throws IOException {
         Date date = new Date();
         String strDateFormat = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
@@ -25,9 +27,12 @@ public class HelloWorldController {
 
         String clientIp = IpUtil.getIpAddress(request);
         StringBuilder sb = new StringBuilder();
+        InetAddress inetadd = InetAddress.getLocalHost();
         sb.append("<h1>Hello Spring Boot</h1><p> Current time is ")
                 .append(dateTimeStr).append(".</p><p> Your IP is ")
                 .append(clientIp)
+                .append(".</p><p>This application is running on ").append(inetadd.getHostName())
+                .append(" with IP ").append(inetadd.getHostAddress())
                 .append(".</p><p>This is a demo project of Spring Boot package in Jar artifact.</p><p><a href=\"/hello\">hello</a></p>");
         return sb.toString();
     }
