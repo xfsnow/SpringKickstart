@@ -1,6 +1,8 @@
 package fun.snowpeak.kickstart;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.system.JavaVersion;
+import org.springframework.core.SpringVersion;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,12 +30,16 @@ public class HelloWorldController {
         String clientIp = IpUtil.getIpAddress(request);
         StringBuilder sb = new StringBuilder();
         InetAddress inetadd = InetAddress.getLocalHost();
+
         sb.append("<h1>Hello Spring Boot</h1><p> Current time is ")
                 .append(dateTimeStr).append(".</p><p> Your IP is ")
                 .append(clientIp)
-                .append(".</p><p>This application is running on ").append(inetadd.getHostName())
-                .append(" with IP ").append(inetadd.getHostAddress())
-                .append(".</p><p>This is a demo project of Spring Boot package in Jar artifact.</p><p><a href=\"/hello\">hello</a></p>");
+                .append(".</p><p>This application is running on <b>").append(inetadd.getHostName())
+                .append("</b> with IP <b>").append(inetadd.getHostAddress())
+                .append("</b>.</p><p>This is a demo project of Spring Boot package in Jar artifact.</p><p>This application is built with Spring <b>")
+                .append(SpringVersion.getVersion()).append("</b> on Java <b>")
+                .append(JavaVersion.getJavaVersion().toString())
+                .append("</b>.</p><h4><a href=\"/hello\">hello</a></h4>");
         return sb.toString();
     }
 
