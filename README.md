@@ -177,3 +177,32 @@ OS name: "linux", version: "5.13.0-1031-azure", arch: "amd64", family: "unix"
 ```
 但是需要把这个安装包添加到 GitHub 源码库里，而 GitHub 现在上传文件最大100MB，不能上传这个170MB的 Java 安装包。安装不了，回来改项目配置吧。改 pom.xml 中的`<java.version>11</java.version>`，和 SpringKickstart.Dockerfile 中的 `FROM openjdk:11-slim`。再重新打包和构建一遍。
 最后试的 Java 11 也不行，直到降到 Java 8 才可以。
+
+2022-06-29 16:38
+Pipeline 中不指定 jdkVersion 的 maven 任务，默认版本是 Java 11。
+```
+openjdk 11.0.15 2022-04-19
+OpenJDK Runtime Environment Temurin-11.0.15+10 (build 11.0.15+10)
+OpenJDK 64-Bit Server VM Temurin-11.0.15+10 (build 11.0.15+10, mixed mode)
+Apache Maven 3.8.6 (84538c9988a25aec085021c365c560670ad80f63)
+Maven home: /usr/share/apache-maven-3.8.6
+Java version: 11.0.15, vendor: Eclipse Adoptium, runtime: /usr/lib/jvm/temurin-11-jdk-amd64
+Default locale: en, platform encoding: UTF-8
+OS name: "linux", version: "5.13.0-1031-azure", arch: "amd64", family: "unix"
+
+```
+
+从而验证新建 Pipeline 时向导给生成的
+```yaml
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'package'
+```
+才指定的 jdkVersionOption: '1.8'，感觉是这个向导有些坑啊。
